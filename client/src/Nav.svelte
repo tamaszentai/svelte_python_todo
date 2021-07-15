@@ -1,10 +1,8 @@
-<nav>The Amazing To Do</nav>
+<header>Todo App</header>
 
 <style>
-  nav {
-    color: salmon;
+  header {
     font-size: 3rem;
-    background-color: royalblue;
-    text-align: center;
+    padding: 1rem;
   }
 </style>

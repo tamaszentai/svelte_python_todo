@@ -6,29 +6,35 @@
 
   let todo = {
     id: uuidv4(),
-    name: '',
-    isCompleted: true
-  }
+    name: "",
+    isCompleted: false,
+  };
 
   const addTodoHandler = (e) => {
-      e.preventDefault();
-      dispatch("addtodo", todo);
-      console.log(todo);
-      todo = {
-          id: uuidv4(),
-          name: '',
-          isCompleted: false
-      }
+    e.preventDefault();
+    dispatch("addtodo", todo);
+    console.log(todo);
+    todo = {
+      id: uuidv4(),
+      name: "",
+    };
   };
 </script>
 
 <form on:submit={addTodoHandler}>
-  <input type="text" placeholder="todo" bind:value={todo.name} />
-  <input type="submit" value="Add Todo" />
+  <input type="text" placeholder="todo" bind:value={todo.name} required />
+  <input type="submit" value=" + " />
 </form>
 
 <style>
   form {
     margin-top: 3rem;
   }
+
+  input[type="submit"] {
+    background-color: rgb(99, 0, 156);
+    color: white;
+    cursor: pointer;
+  }
+
 </style>
