@@ -13,7 +13,6 @@
   const addTodoHandler = (e) => {
     e.preventDefault();
     dispatch("addtodo", todo);
-    console.log(todo);
     todo = {
       id: uuidv4(),
       name: "",
@@ -36,5 +35,4 @@
     color: white;
     cursor: pointer;
   }
-
 </style>

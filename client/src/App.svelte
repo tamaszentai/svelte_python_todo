@@ -10,6 +10,18 @@
     data = [...data, newTodo];
   };
 
+  const updateTodoHandler = (e) => {
+    const id = e.detail;
+    const todo = data.find((todo) => todo.id === id);
+    todo.isCompleted = !todo.isCompleted;
+    data = [...data]; // <-- rerender data
+  };
+
+  const deleteTodoHandler = (e) => {
+    const id = e.detail;
+    data = data.filter((todo) => todo.id !== id);
+  };
+
   let data = [
     {
       id: uuidv4(),
@@ -30,36 +42,31 @@
 </script>
 
 <main>
-	<Nav />
-	<div class="wrapper">
-		<AddForm on:addtodo={addTodoHandler} />
-	  </div>
-	  <div class="list">
-		<ul>
-		  {#each data as todo}
-			<li>
-			  <ListItem
-				id={todo.id}
-				name={todo.name}
-				isCompleted={todo.isCompleted}
-			  />
-			</li>
-		  {/each}
-		</ul>
-	  </div>
+  <Nav />
+  <div class="wrapper">
+    <AddForm on:addtodo={addTodoHandler} />
+  </div>
+  <div class="list">
+    <ul>
+      {#each data as todo}
+        <ListItem
+          on:updatetodo={updateTodoHandler}
+          on:deletetodo={deleteTodoHandler}
+          id={todo.id}
+          name={todo.name}
+          isCompleted={todo.isCompleted}
+        />
+      {/each}
+    </ul>
+  </div>
 </main>
 
-
-
-
 <style>
-main {
-	width: 30%;
-	margin: 10rem auto;
-	background-color: whitesmoke;
-	border-radius: 15px;
-	border: 1px solid black;
-}
+  main {
+    width: 20rem;
+    margin: 5rem auto;
+    background-color: whitesmoke;
+  }
   .wrapper {
     text-align: center;
   }
