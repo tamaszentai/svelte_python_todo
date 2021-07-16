@@ -1,17 +1,18 @@
 <script>
-  import { createEventDispatcher } from "svelte";
-  const dispatch = createEventDispatcher();
+  import { data } from "./store.js";
 
   export let id;
   export let name;
   export let isCompleted;
 
   const updateTodoHandler = (id) => {
-    dispatch("updatetodo", id);
+    const todo = $data.find((todo) => todo.id === id);
+    todo.isCompleted = !todo.isCompleted;
+    $data = [...$data]; // <-- rerender data
   };
 
   const deleteTodoHandler = (id) => {
-    dispatch("deletetodo", id);
+    $data = $data.filter((todo) => todo.id !== id);
   };
 </script>
 
@@ -58,6 +59,10 @@
     right: 0%;
     padding: 12px 16px;
     transform: translate(0%, -50%);
+  }
+
+  .close:hover {
+    color: red;
   }
 
   .name.crossed {
