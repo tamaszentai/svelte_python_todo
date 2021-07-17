@@ -58,7 +58,7 @@ def get_todos():
     return jsonify(result)
 
 
-# Get all Todos
+# Get single Todo
 @app.route('/todo/<id>', methods=['GET'])
 def get_todo(id):
     todo = Todo.query.get(id)
@@ -79,6 +79,15 @@ def update_todo(id):
 
     db.session.commit()
 
+    return todo_schema.jsonify(todo)
+
+# Delete Todo
+@app.route('/todo/<id>', methods=['DELETE'])
+def delete_todo(id):
+    todo = Todo.query.get(id)
+    db.session.delete(todo)
+    db.session.commit()
+    
     return todo_schema.jsonify(todo)
 
 # Run server
