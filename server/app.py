@@ -1,3 +1,4 @@
+from itertools import product
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
@@ -55,6 +56,30 @@ def get_todos():
     result = todos_schema.dump(all_todos)
 
     return jsonify(result)
+
+
+# Get all Todos
+@app.route('/todo/<id>', methods=['GET'])
+def get_todo(id):
+    todo = Todo.query.get(id)
+    return todo_schema.jsonify(todo)
+
+# Update a Todo
+@app.route('/todo/<id>', methods=['PUT'])
+def update_todo(id):
+    todo = Todo.query.get(id)
+
+    id = request.json['id']
+    name = request.json['name']
+    isCompleted = request.json['isCompleted']
+
+    todo.id = id
+    todo.name = name
+    todo.isCompleted = isCompleted
+
+    db.session.commit()
+
+    return todo_schema.jsonify(todo)
 
 # Run server
 if __name__ == '__main__':
