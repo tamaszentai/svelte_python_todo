@@ -4,6 +4,8 @@
   import { onMount } from "svelte";
   import { todos } from "./store.js";
 
+  import axios from 'axios';
+
   import Nav from "./Nav.svelte";
   import AddForm from "./AddForm.svelte";
   import ListItem from "./ListItem.svelte";
@@ -34,6 +36,9 @@
     const newTodo = e.detail;
     $todos = [...$todos, newTodo];
     console.log($todos);
+    axios.post("http://localhost:8000", newTodo)
+    .then(res => console.log(res.status))
+    
   };
 
   const deleteAllHandler = () => {
@@ -52,8 +57,8 @@
 <main>
   {#if modalToggle}
   <Modal on:closemodal={closeModal}>
-    <Button value={true}>YES</Button>
-    <Button value={false}>NO</Button>
+    <Button value={true} on:click={deleteAllHandler} on:click={closeModal}>YES</Button>
+    <Button value={false} on:click={closeModal}>NO</Button>
   </Modal>
   {/if}
   <Nav />
@@ -68,7 +73,7 @@
         <ListItem
           id={todo.id}
           name={todo.name}
-          isImportant={todo.isImportant}
+          isCompleted={todo.isCompleted}
         />
       </div>
       {:else}
@@ -81,9 +86,10 @@
 <style>
   main {
     width: 30rem;
-    min-height: 35rem;
+    min-height: 33.5rem;
     margin: 5rem auto;
     background-color: whitesmoke;
+    border-radius: 5px;
   }
   .wrapper {
     text-align: center;
@@ -104,7 +110,7 @@
   }
 
   .delete-all:hover {
-    color: red;
+    color: salmon;
     cursor: pointer;
   }
 

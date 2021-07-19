@@ -1,19 +1,19 @@
 <script>
-    import { createEventDispatcher } from 'svelte';
-    const dispatch = createEventDispatcher();
+  import { fade, fly } from "svelte/transition";
+  import { createEventDispatcher } from "svelte";
+  const dispatch = createEventDispatcher();
 
-    const closeModal = () => {
-        dispatch('closemodal');
-    }
-    
+  const closeModal = () => {
+    dispatch("closemodal");
+  };
 </script>
 
-<div class="modal-backdrop" on:click={closeModal}/>
-<div class="modal">
-    <h2>Are you sure you want to delete all Todos?</h2>
-    <footer>
+<div class="modal-backdrop" in:fade={{duration: 200}} out:fade={{duration: 300}} on:click={closeModal} />
+<div class="modal" in:fade={{duration: 500}} out:fly={{y:200, duration: 300}}>
+  <h2>Are you sure you want to delete all Todos?</h2>
+  <footer>
     <slot />
-</footer>
+  </footer>
 </div>
 
 <style>
@@ -41,12 +41,11 @@
   }
 
   footer {
-      text-align: center;
+    text-align: center;
   }
 
-
   h2 {
-      text-align: center;
+    text-align: center;
   }
 
   @media (min-width: 768px) {

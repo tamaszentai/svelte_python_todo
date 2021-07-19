@@ -21,17 +21,17 @@ ma = Marshmallow(app)
 class Todo(db.Model):
     id = db.Column(db.String, primary_key=True)
     name = db.Column(db.String(100))
-    isImportant = db.Column(db.Boolean)
+    isCompleted = db.Column(db.Boolean)
 
-    def __init__(self, id, name, isImportant):
+    def __init__(self, id, name, isCompleted):
         self.id = id
         self.name = name
-        self.isImportant = isImportant
+        self.isCompleted = isCompleted
 
 # Todo Schema
 class TodoSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'name', 'isImportant')
+        fields = ('id', 'name', 'isCompleted')
 
 # Init Schema
 todo_schema = TodoSchema()
@@ -42,9 +42,9 @@ todos_schema = TodoSchema(many=True)
 def add_todo():
     id = request.json['id']
     name = request.json['name']
-    isImportant = request.json['isImportant']
+    isCompleted = request.json['isCompleted']
 
-    new_todo = Todo(id, name, isImportant)
+    new_todo = Todo(id, name, isCompleted)
     
     db.session.add(new_todo)
     db.session.commit()
@@ -73,11 +73,11 @@ def update_todo(id):
 
     id = request.json['id']
     name = request.json['name']
-    isImportant = request.json['isImportant']
+    isCompleted = request.json['isCompleted']
 
     todo.id = id
     todo.name = name
-    todo.isImportant = isImportant
+    todo.isCompleted = isCompleted
 
     db.session.commit()
 

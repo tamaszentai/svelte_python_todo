@@ -7,7 +7,7 @@
   let todo = {
     id: uuidv4(),
     name: "",
-    isImportant: false,
+    isCompleted: false,
   };
 
   const addTodoHandler = (e) => {
