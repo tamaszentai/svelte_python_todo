@@ -1,30 +1,30 @@
 <script>
-  import { data } from "./store.js";
+  import { todos } from "./store.js";
 
   export let id;
   export let name;
-  export let isCompleted;
+  export let isImportant;
 
   const updateTodoHandler = (id) => {
-    const todo = $data.find((todo) => todo.id === id);
-    todo.isCompleted = !todo.isCompleted;
-    $data = [...$data]; // <-- rerender data
+    const todo = $todos.find((todo) => todo.id === id);
+    todo.isImportant = !todo.isImportant;
+    $todos = [...$todos]; // <-- rerender data
   };
 
   const deleteTodoHandler = (id) => {
-    $data = $data.filter((todo) => todo.id !== id);
+    $todos = $todos.filter((todo) => todo.id !== id);
   };
 </script>
 
 <div class="list-item">
-  <li>
+  <li class="{isImportant ? "name important" : ""}">
     <input
       type="checkbox"
-      checked={isCompleted}
+      checked={isImportant}
       on:click={() => updateTodoHandler(id)}
     />
-    <span class={isCompleted ? "name crossed" : ""}>{name}</span>
-    <span class="close">
+    <span>{name}</span>
+    <span class="delete">
       <i
         style="font-size:24px"
         class="fa"
@@ -52,7 +52,7 @@
     position: relative;
   }
 
-  .close {
+  .delete {
     cursor: pointer;
     position: absolute;
     top: 50%;
@@ -61,11 +61,11 @@
     transform: translate(0%, -50%);
   }
 
-  .close:hover {
+  .delete:hover {
     color: red;
   }
 
-  .name.crossed {
-    text-decoration: line-through;
+  .name.important {
+    background: salmon;
   }
 </style>

@@ -7,11 +7,10 @@
   let todo = {
     id: uuidv4(),
     name: "",
-    isCompleted: false,
+    isImportant: false,
   };
 
   const addTodoHandler = (e) => {
-    e.preventDefault();
     dispatch("addtodo", todo);
     todo = {
       id: uuidv4(),
@@ -20,7 +19,7 @@
   };
 </script>
 
-<form on:submit={addTodoHandler}>
+<form on:submit|preventDefault={addTodoHandler}> <!-- event modifier -->
   <input type="text" placeholder="todo" bind:value={todo.name} required />
   <input type="submit" value=" + " />
 </form>
