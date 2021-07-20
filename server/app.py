@@ -43,6 +43,8 @@ def add_todo():
     id = request.json['id']
     name = request.json['name']
     isCompleted = request.json['isCompleted']
+    # if id or name or isCompleted:
+    #     raise Exception("Something is missing!")
 
     new_todo = Todo(id, name, isCompleted)
     

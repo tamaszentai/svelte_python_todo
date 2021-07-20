@@ -18,35 +18,83 @@
   $: completed = $todos.filter((todo) => todo.isCompleted === true);
   $: completedTodosNumber = completed.length;
 
-  onMount(async () => {
-    axios.get("http://localhost:8000").then((res) => {
-      $todos = res.data;
-    });
+  let modalTitle = "";
+  let errorModal = false;
+  let deleteModal = false;
+
+  onMount(() => {
+    axios
+      .get("http://localhost:8000")
+      .then((response) => {
+        if (response.statusText === "OK" && response.status === 200) {
+          $todos = response.data;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        errorModalHandler()
+      });
   });
 
   const addTodoHandler = (e) => {
     const newTodo = e.detail;
-    $todos = [...$todos, newTodo];
-    axios.post("http://localhost:8000", newTodo);
+    axios
+      .post("http://localhost:8000", newTodo)
+      .then((response) => {
+        if (response.statusText === "OK" && response.status === 200) {
+          $todos = [...$todos, newTodo];
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        errorModalHandler()
+      });
   };
 
   const updateTodoHandler = (e) => {
     const id = e.detail;
     const todo = $todos.find((todo) => todo.id === id);
     todo.isCompleted = !todo.isCompleted;
-    $todos = [...$todos]; // <-- rerender data
-    axios.put(`http://localhost:8000/${id}`, todo);
+    axios
+      .put(`http://localhost:8000/${id}`, todo)
+      .then((response) => {
+        if (response.statusText === "OK" && response.status === 200) {
+          $todos = [...$todos];
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        errorModalHandler()
+      });
   };
 
   const deleteTodoHandler = (e) => {
-    const id = e.detail; 
-    $todos = $todos.filter((todo) => todo.id !== id);
-    axios.delete(`http://localhost:8000/${id}`);
+    const id = e.detail;
+    axios
+      .delete(`http://localhost:8000/${id}`)
+      .then((response) => {
+        if (response.statusText === "OK" && response.status === 200) {
+          $todos = $todos.filter((todo) => todo.id !== id);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        errorModalHandler()
+      });
   };
 
   const deleteAllHandler = () => {
-    $todos = [];
-    axios.delete("http://localhost:8000");
+    axios
+      .delete("http://localhost:8000")
+      .then((response) => {
+        if (response.statusText === "OK" && response.status === 200) {
+          $todos = [];
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        errorModalHandler()
+      });
   };
 
   const openModal = () => {
@@ -55,25 +103,47 @@
 
   const closeModal = () => {
     modalToggle = false;
+    errorModal = false;
+    deleteModal = false;
+  };
+
+  const deleteAllModalHandler = () => {
+    deleteModal = true;
+    modalTitle = "Are you sure you want to delete all Todos?";
+    openModal();
+  };
+
+  const errorModalHandler = () => {
+    errorModal = true;
+    modalTitle = "Something went wrong, please try again later...";
+    openModal();
   };
 </script>
 
 <main>
   {#if modalToggle}
-    <Modal on:closemodal={closeModal}>
+    <Modal on:closemodal={closeModal} {modalTitle}>
+      {#if deleteModal}
       <Button
         className={"red"}
         on:click={deleteAllHandler}
         on:click={closeModal}>YES</Button
       >
       <Button className={"green"} on:click={closeModal}>NO</Button>
+      {/if}
+
+      {#if errorModal}
+      <Button className={"lightseagreen"} on:click={closeModal}>OK</Button>
+      {/if}
     </Modal>
   {/if}
   <Header />
   <div class="wrapper">
     <AddForm on:addtodo={addTodoHandler} />
-    <Button className={"lightseagreen"} on:click={openModal} isDisabled={!todosNumber}
-      >DELETE ALL</Button
+    <Button
+      className={"lightseagreen"}
+      on:click={deleteAllModalHandler}
+      isDisabled={!todosNumber}>DELETE ALL</Button
     >
     <div class="counters">
       {completedTodosNumber}
@@ -104,7 +174,7 @@
   main {
     width: 30rem;
     min-height: 36rem;
-    margin: 5rem auto;
+    margin: 10rem auto;
     background-color: whitesmoke;
     border-radius: 5px;
   }
@@ -114,7 +184,7 @@
 
   .counters {
     font-size: 1.5rem;
-    transition: .2s;
+    transition: 0.2s;
   }
 
   .list {

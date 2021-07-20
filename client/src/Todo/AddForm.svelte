@@ -18,7 +18,6 @@
       name: name.trim(),
       isCompleted: isCompleted,
     };
-    console.log(todo);
     dispatch("addtodo", todo);
     id = uuidv4();
     name = "";
