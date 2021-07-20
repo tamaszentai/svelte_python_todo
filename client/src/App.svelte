@@ -2,15 +2,15 @@
   import { fade } from "svelte/transition";
   import { flip } from "svelte/animate";
   import { onMount } from "svelte";
-  import { todos } from "./store.js";
+  import { todos } from "./Todo/store.js";
 
   import axios from "axios";
 
-  import Nav from "./Nav.svelte";
-  import AddForm from "./AddForm.svelte";
-  import ListItem from "./ListItem.svelte";
-  import Modal from "./Modal.svelte";
-  import Button from "./Button.svelte";
+  import Header from "./UI/Header.svelte";
+  import AddForm from "./Todo/AddForm.svelte";
+  import ListItem from "./Todo/ListItem.svelte";
+  import Modal from "./UI/Modal.svelte";
+  import Button from "./UI/Button.svelte";
 
   let modalToggle = false;
 
@@ -55,11 +55,10 @@
       <Button className={"green"} on:click={closeModal}>NO</Button>
     </Modal>
   {/if}
-  <Nav />
+  <Header />
   <div class="wrapper">
     <AddForm on:addtodo={addTodoHandler} />
-    <!-- <button class="delete-all" on:click={openModal}>DELETE ALL</button> -->
-    <Button className={"lightseagreen"} on:click={openModal} {todosNumber}
+    <Button className={"lightseagreen"} on:click={openModal} isDisabled={!todosNumber}
       >DELETE ALL</Button
     >
     <div class="counters">
@@ -99,6 +98,7 @@
 
   .counters {
     font-size: 1.5rem;
+    transition: .2s;
   }
 
   .list {

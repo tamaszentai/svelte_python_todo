@@ -1,10 +1,10 @@
 <script>
   export let className;
   export let typeName = false;
-  export let todosNumber = false;
+  export let isDisabled = false;
 </script>
 
-<button class={className} type={typeName} disabled={todosNumber === 0} on:click>
+<button class={className} type={typeName} disabled={isDisabled} on:click>
   <slot />
 </button>
 
