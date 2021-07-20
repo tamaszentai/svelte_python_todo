@@ -1,33 +1,26 @@
 <script>
-  import axios from 'axios';
-  import { todos } from "./store.js";
+  import { createEventDispatcher } from "svelte";
+
+  const dispatch = createEventDispatcher();
 
   export let id;
   export let name;
   export let isCompleted;
 
   const updateTodoHandler = (id) => {
-    const todo = $todos.find((todo) => todo.id === id);
-    todo.isCompleted = !todo.isCompleted;
-    $todos = [...$todos]; // <-- rerender data
-    axios.put(`http://localhost:8000/${id}`, todo);
+    dispatch("updatetodo", id);
   };
 
   const deleteTodoHandler = (id) => {
-    $todos = $todos.filter((todo) => todo.id !== id);
-    axios.delete(`http://localhost:8000/${id}`);
+    dispatch("deletetodo", id);
   };
 </script>
 
-<div class="list-item" >
-  <li class={isCompleted ? "completed" : ""} >
+<div class="list-item">
+  <li class={isCompleted ? "completed" : ""}>
     <span on:click={() => updateTodoHandler(id)}>{name}</span>
     <span class="delete" on:click={() => deleteTodoHandler(id)}>
-      <i
-        style="font-size:24px"
-        class="fa"
-        >&#xf014;</i
-      >
+      <i style="font-size:24px" class="fa">&#xf014;</i>
     </span>
   </li>
 </div>
@@ -59,7 +52,7 @@
   }
 
   li.completed:hover {
-    background: rgba(114,114,114, .8)
+    background: rgba(114, 114, 114, 0.8);
   }
 
   li.completed::before {
@@ -87,5 +80,4 @@
   .delete:hover {
     color: salmon;
   }
-
 </style>

@@ -30,6 +30,20 @@
     axios.post("http://localhost:8000", newTodo);
   };
 
+  const updateTodoHandler = (e) => {
+    const id = e.detail;
+    const todo = $todos.find((todo) => todo.id === id);
+    todo.isCompleted = !todo.isCompleted;
+    $todos = [...$todos]; // <-- rerender data
+    axios.put(`http://localhost:8000/${id}`, todo);
+  };
+
+  const deleteTodoHandler = (e) => {
+    const id = e.detail; 
+    $todos = $todos.filter((todo) => todo.id !== id);
+    axios.delete(`http://localhost:8000/${id}`);
+  };
+
   const deleteAllHandler = () => {
     $todos = [];
     axios.delete("http://localhost:8000");
@@ -72,6 +86,8 @@
       {#each $todos as todo (todo.id)}
         <div transition:fade animate:flip>
           <ListItem
+            on:deletetodo={deleteTodoHandler}
+            on:updatetodo={updateTodoHandler}
             id={todo.id}
             name={todo.name}
             isCompleted={todo.isCompleted}
