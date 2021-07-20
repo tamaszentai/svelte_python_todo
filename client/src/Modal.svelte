@@ -9,7 +9,7 @@
 </script>
 
 <div class="modal-backdrop" in:fade={{duration: 200}} out:fade={{duration: 300}} on:click={closeModal} />
-<div class="modal" in:fade={{duration: 500}} out:fly={{y:200, duration: 300}}>
+<div class="modal" in:fade={{duration: 200}} out:fly={{y:200, duration: 300}}>
   <h2>Are you sure you want to delete all Todos?</h2>
   <footer>
     <slot />

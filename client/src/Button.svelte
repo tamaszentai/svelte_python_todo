@@ -1,34 +1,50 @@
 <script>
-    export let value;
+  export let className;
+  export let typeName = false;
+  export let todosNumber = false;
 </script>
 
-<button class={value ? '' : 'button no'} on:click >
+<button class={className} type={typeName} disabled={todosNumber === 0} on:click>
   <slot />
 </button>
 
 <style>
-  button{
-    /* font: inherit;
-    border: 1px solid red;
-    background: red;
-    padding: 0.5rem 1rem;
-    color: white;
+  button {
     border-radius: 5px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.26);
+    transition: 0.2s;
+    min-width: 2.5rem;
     cursor: pointer;
-    text-decoration: none; */
+  }
+  .red {
+    background-color: salmon;
   }
 
-  button.no{
-    /* font: inherit;
-    border: 1px solid green;
-    background: green;
-    padding: 0.5rem 1rem;
-    color: white;
-    border-radius: 5px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.26);
-    cursor: pointer;
-    text-decoration: none; */
+  .red:hover {
+    background-color: rgb(248, 194, 188);
+  }
 
+  .green {
+    background-color: rgb(81, 238, 81)
+  }
+
+  .green:hover {
+    background-color: rgb(172, 238, 172);
+  }
+
+  .lightseagreen {
+    background-color: lightseagreen;
+  }
+
+  .lightseagreen:hover {
+    background-color: rgb(40, 219, 210);
+  }
+
+  :disabled {
+    text-decoration: line-through;
+  }
+
+  :disabled:hover {
+    background-color: lightseagreen;
+    cursor:initial;
   }
 </style>

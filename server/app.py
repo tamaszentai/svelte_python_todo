@@ -92,6 +92,14 @@ def delete_todo(id):
 
     return todo_schema.jsonify(todo)
 
+# Delete all Todo
+@app.route('/', methods=['DELETE'])
+def delete_all_todo():
+    db.session.query(Todo).delete() 
+    db.session.commit()
+
+    return jsonify('deleted all')
+
 # Run server
 if __name__ == '__main__':
     app.run(host="localhost", port=8000, debug=True)

@@ -1,4 +1,5 @@
 <script>
+  import axios from 'axios';
   import { todos } from "./store.js";
 
   export let id;
@@ -7,14 +8,14 @@
 
   const updateTodoHandler = (id) => {
     const todo = $todos.find((todo) => todo.id === id);
-    console.log(todo);
     todo.isCompleted = !todo.isCompleted;
     $todos = [...$todos]; // <-- rerender data
-    console.log($todos);
+    axios.put(`http://localhost:8000/${id}`, todo);
   };
 
   const deleteTodoHandler = (id) => {
     $todos = $todos.filter((todo) => todo.id !== id);
+    axios.delete(`http://localhost:8000/${id}`);
   };
 </script>
 

@@ -4,6 +4,8 @@
 
   import { v4 as uuidv4 } from "uuid";
 
+  import Button from "./Button.svelte";
+
   let todo = {
     id: uuidv4(),
     name: "",
@@ -15,13 +17,22 @@
     todo = {
       id: uuidv4(),
       name: "",
+      isCompleted: false,
     };
   };
 </script>
 
-<form on:submit|preventDefault={addTodoHandler}> <!-- event modifier -->
-  <input type="text" placeholder="todo" bind:value={todo.name} required />
-  <input type="submit" value=" + " />
+<form on:submit|preventDefault={addTodoHandler}>
+  <!-- event modifier -->
+  <input
+    type="text"
+    placeholder="Type something here..."
+    bind:value={todo.name}
+    required
+  />
+  <Button className={"lightseagreen"} typeName={"submit"}
+    ><i class="fa fa-plus" aria-hidden="true" /></Button
+  >
 </form>
 
 <style>
@@ -29,9 +40,8 @@
     margin-top: 3rem;
   }
 
-  input[type="submit"] {
-    background-color: rgb(99, 0, 156);
-    color: white;
-    cursor: pointer;
+  input[type=text] {
+    width: 20rem;
+    text-align: center;
   }
 </style>
